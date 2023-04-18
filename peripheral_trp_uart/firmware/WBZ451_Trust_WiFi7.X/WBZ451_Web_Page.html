@@ -1,0 +1,291 @@
+<!--
+ Use this link to convert this WebPage to HEX array!
+https://www.rapidtables.com/convert/number/ascii-hex-bin-dec-converter.html
+-->
+
+<html>
+    <head>
+        <style>
+
+            .led-box {
+                height: 30px;
+                width: 25%;
+                margin: 10px 0;
+                float: left;
+            }
+
+            .led-box pred{  
+            font-size: 12px;
+            text-align: center;
+            margin: 1em;
+            }
+
+            .led-grey {
+                margin: 0 auto;
+                width: 24px;
+                height: 24px;
+                background-color: #808080;
+                border-radius: 50%;
+                box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #808080 0 -1px 9px, #FFF 0 2px 12px;
+
+            }
+            .led-red {
+                margin: 0 auto;
+                width: 24px;
+                height: 24px;
+                background-color: #F00;
+                border-radius: 50%;
+                box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #441313 0 -1px 9px, rgba(255, 0, 0, 0.5) 0 2px 12px;
+
+            }
+
+
+            .led-yellow {
+                margin: 0 auto;
+                width: 24px;
+                height: 24px;
+                background-color: #FF0;
+                border-radius: 50%;
+                box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #808002 0 -1px 9px, #FF0 0 2px 12px;
+            }
+
+
+
+            .led-green {
+                margin: 0 auto;
+                width: 24px;
+                height: 24px;
+                background-color: #ABFF00;
+                border-radius: 50%;
+                box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #304701 0 -1px 9px, #89FF00 0 2px 12px;
+            }
+
+            .led-blue {
+                margin: 0 auto;
+                width: 24px;
+                height: 24px;
+                background-color: #24E0FF;
+                border-radius: 50%;
+                box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #006 0 -1px 9px, #3F8CFF 0 2px 14px;
+            }
+            .led-blue-small {
+                margin: 0 auto;
+                width: 16px;
+                height: 16px;
+                background-color: #24E0FF;
+                border-radius: 50%;
+                box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #006 0 -1px 9px, #3F8CFF 0 2px 14px;
+            }
+        </style>
+
+        <title>WBZ451 WebServer</title>
+    </head>
+    <body style="margin : auto; width: 450px; background-color: rgb(91, 91, 91); font-family: Comic Sans MS;">
+        <div align="center" style="border-radius:15px; border-style: none solid solid; border-color: -moz-use-text-color rgb(153, 153, 153) rgb(153, 153, 153); border-width: 0pt 1px 1px; margin: 20px auto; padding: 20px;  background-color: white;">
+            <div style=" text-align: center; border-radius:5px; padding: 4px; background: rgb(28, 110, 169) none repeat scroll 0% 50%; font-weight: bold; color: rgb(255, 255, 255); margin-bottom: 15px; ">
+                Welcome to the WBZ451 WebServer
+                <br><em id="time">Time</em>
+            </div>
+
+            <div id="container">
+                <div type="display: inline-block; margin:0 auto;">
+                    <div id="demo" style=" text-align: center">
+                    </div>
+                    <a href="https://www.microchip.com/en-us/development-tool/EA71C53A">
+                        <img src="https://www.microchip.com/content/dam/mchp/mrt-dam/products/wsg/210819-WSG-PHOTO-EV96B94A-Front-Transparent.jpg" alt="No Web Connectivity" width="250" height="95">
+                    </a>
+                    <p>LED:<a style=" font-size: 0.6em; border-bottom: 1px dotted rgb(102, 102, 102);"> (click on LED to toggle) </a>
+                        <br>
+
+
+                    <div class="led-box">
+                        <div id="ledred" class="led-red" onclick="newAJAXCommand('led.cgi?led-red', ledFunction, false)" style="font-family: Arial;cursor: pointer; "></div>
+                        <div style=" font-size: 0.6em;">
+                            LED red
+                        </div>
+                    </div>
+                    <div class="led-box">
+                        <div id="ledgreen" class="led-green" onclick="newAJAXCommand('led.cgi?led-green', ledFunction, false)" style="font-family: Arial;cursor: pointer; "></div>
+                        <div style=" font-size: 0.6em;">
+                            LED green
+                        </div>
+                    </div>
+                    <div class="led-box">
+                        <div id="ledblue" class="led-blue" onclick="newAJAXCommand('led.cgi?led-blue', ledFunction, false)" style="font-family: Arial;cursor: pointer; "></div>
+                        <div style=" font-size: 0.6em;">
+                            LED blue
+                        </div>
+                    </div>
+                    <div class="led-box">
+                        <div id="leduser" class="led-blue"></div>
+
+                    </div>
+                    <p>Button:<br>
+                        <small><span id="sw1">?</span></small>
+                    </p>
+                    <p>BLE Received</br>
+                        <span style="font-family: Arial; ">
+
+                            <a id="msg"></a>
+
+                        </span>
+                    </p>
+                    <label >Send BLE:</label><br>
+                    <input type="text" id="fname" name="bleValue">
+                    <button id="postButton" style="color:red;" type="button" onclick="postForm('form.cgi', ledFunction);">Submit</button>
+
+
+
+                    <div style="border-top: 1px dotted rgb(102, 102, 102); margin: 10px 50px 0pt; font-size: 0.6em; color: rgb(102, 102, 102); text-align: center; padding-top: 10px;" id="footer">Copyright &copy; 2022 Microchip Technology,Inc.</div>
+
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+<script type="text/javascript">
+
+    function ledFunction(xmlData)
+    {
+        if (xmlData)
+        {
+            document.getElementById("leduser").className = (getXMLValue(xmlData, 'led') != '1') ? 'led-grey' : ' led-blue';
+            document.getElementById("ledred").className = (getXMLValue(xmlData, 'led-red') != '1') ? 'led-grey' : ' led-red';
+            document.getElementById("ledgreen").className = (getXMLValue(xmlData, 'led-green') != '1') ? 'led-grey' : ' led-green';
+            document.getElementById("ledblue").className = (getXMLValue(xmlData, 'led-blue') != '1') ? 'led-grey' : ' led-blue';
+
+            //document.getElementById('led').style.color = (getXMLValue(xmlData, 'led') == '1') ? 'rgb(28, 110, 169)' : '#ddd';
+            document.getElementById('sw1').innerHTML = (getXMLValue(xmlData, 'sw1') == '1') ? '&Lambda;' : 'V';
+            document.getElementById('msg').innerHTML = getXMLValue(xmlData, 'msg');
+            document.getElementById('time').innerHTML = getXMLValue(xmlData, 'time');
+
+            if (getXMLValue(xmlData, 'ble') == '0')
+            {
+                document.getElementById("postButton").disabled = true;
+                document.getElementById("postButton").style.color = "red";
+            }
+            else if (getXMLValue(xmlData, 'ble') == '1')
+            {
+                document.getElementById("postButton").disabled = false;
+                document.getElementById("postButton").style.color = "blue";
+
+            }
+        }
+    }
+    // Stores a queue of AJAX events to process
+    var ajaxList = new Array();
+    // Determines when a request is considered "timed out"
+    var timeOutMS = 5000; //ms
+    function postForm(url, container)
+    {
+        var text = "message=";
+        text += document.getElementById('fname').value;
+
+        newAJAXCommand(url, container, false, text);
+
+    }
+    function newAJAXCommand(url, container, repeat, data)
+    {
+        // Set up our object
+        var newAjax = new Object();
+        var theTimer = new Date();
+        newAjax.url = url;
+        newAjax.container = container;
+        newAjax.repeat = repeat;
+        newAjax.ajaxReq = null;
+
+        // Create and send the request for appropriate browser
+        if (window.XMLHttpRequest)
+        {   // Code for IE7+, Firefox, Chrome, Safari, Opera
+            newAjax.ajaxReq = new XMLHttpRequest();
+            newAjax.ajaxReq.open((data == null) ? "GET" : "POST", newAjax.url, true);
+            newAjax.ajaxReq.send(data);
+        }
+        else if (window.ActiveXObject)
+        {   // Code for IE6, IE5
+            newAjax.ajaxReq = new ActiveXObject("Microsoft.XMLHTTP");
+            if (newAjax.ajaxReq)
+            {
+                newAjax.ajaxReq.open((data == null) ? "GET" : "POST", newAjax.url, true);
+                newAjax.ajaxReq.send(data);
+            }
+        }
+
+        newAjax.lastCalled = theTimer.getTime();
+
+        // Store in our array
+        ajaxList.push(newAjax);
+    }
+    // Loops over all pending AJAX events to determine if any action is required
+    function pollAJAX()
+    {
+        var curAjax = new Object();
+        var theTimer = new Date();
+        var elapsed;
+        var lenght = ajaxList.length;
+        // Read off the ajaxList objects one by one
+        for (i = ajaxList.length; i > 0; i--)
+        {
+            curAjax = ajaxList.shift();
+            if (!curAjax)
+                continue;
+            elapsed = theTimer.getTime() - curAjax.lastCalled;
+
+            // If we succeeded
+            if (curAjax.ajaxReq.readyState == 4 && curAjax.ajaxReq.status == 200)
+            {
+                // If it has a container, write the result
+                if (typeof (curAjax.container) == 'function')
+                {
+                    curAjax.container(curAjax.ajaxReq.responseXML.documentElement);
+                }
+                else if (typeof (curAjax.container) == 'string')
+                {
+                    document.getElementById(curAjax.container).innerHTML = curAjax.ajaxReq.responseText;
+                } // (otherwise do nothing for null values)
+
+                curAjax.ajaxReq.abort();
+                curAjax.ajaxReq = null;
+
+                // If it's a repeatable request, then do so
+                if (curAjax.repeat)
+                    newAJAXCommand(curAjax.url, curAjax.container, curAjax.repeat);
+                continue;
+            }
+            // If we've waited over 1 second, then we timed out
+            if (elapsed > timeOutMS) {
+                // Invoke the user function with null input
+                if (typeof (curAjax.container) == 'function') {
+                    curAjax.container(null);
+                } else {
+                    // Alert the user
+                    alert("Command failed.\nConnection to development board was lost.");
+                }
+
+                curAjax.ajaxReq.abort();
+                curAjax.ajaxReq = null;
+
+                // If it's a repeatable request, then do so
+                if (curAjax.repeat)
+                    newAJAXCommand(curAjax.url, curAjax.container, curAjax.repeat);
+                continue;
+            }
+            // Otherwise, just keep waiting
+            ajaxList.push(curAjax);
+        }
+        // Call ourselves again in 200ms
+        setTimeout("pollAJAX()", 50);
+    }
+    function getXMLValue(xmlData, field) {
+        try {
+            if (xmlData.getElementsByTagName(field)[0].firstChild.nodeValue)
+                return xmlData.getElementsByTagName(field)[0].firstChild.nodeValue;
+            else
+                return null;
+        } catch (err) {
+            return null;
+        }
+    }
+    setTimeout("pollAJAX()", 500);
+    setTimeout("newAJAXCommand('status.xml', ledFunction, true);", 500)
+</script>
