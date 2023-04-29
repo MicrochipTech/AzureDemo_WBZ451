@@ -290,8 +290,6 @@ void APP_Initialize(void) {
     uint32_t sw1CurrentVal = 0;
     uint32_t i = 0;
 
-    debug_setSeverity(SEVERITY_INFO);
-
     previousTransmissionTime = 0;
     //appData.appQueue = xQueueCreate(8, sizeof (APP_Msg_T));
     
@@ -621,7 +619,7 @@ static void APP_DataTask(void) {
             timeNow = mktime(&sys_time);
             // send telemetry
             APP_SendToCloud();
-            debug_printTrace("  LUC: Sending MQTT MESSAGE at %s", ctime(&timeNow));
+//            debug_printTrace("  LUC: Sending MQTT MESSAGE at %s", ctime(&timeNow));
 //            static long count = 0;
 //            uint8_t buffer[10];
 //            sprintf(buffer,"%x",count++);
@@ -641,6 +639,7 @@ static void APP_DataTask(void) {
 
             if (az_result_succeeded(send_reported_property(&twin_properties))) {
                 shared_networking_params.reported = 1;
+                debug_printInfo("  APP: Reported IP Address property");
             } else {
                 debug_printError("  APP: Failed to report IP Address property");
             }
@@ -751,24 +750,24 @@ void APP_ReceivedFromCloud_patch(uint8_t* topic, uint8_t* payload) {
         debug_printError("  APP: Could not parse desired property, return code 0x%08x\n", rc);
     } else {
         if (twin_properties.flag.user_led_found == 1) {
-            debug_printInfo("  APP: Found led_user Value '%s' (%d)",
+            debug_printInfo("  APP: Found led_user = '%s' (%d)",
                     LED_Property[twin_properties.desired_led_user - 1],
                     twin_properties.desired_led_user);
         }
         if (twin_properties.flag.blue_led_found == 1) {
-            debug_printInfo("  APP: Desired rgb_led_blue value = %d",
+            debug_printInfo("  APP: Found rgb_led_blue = %d",
                     twin_properties.desired_led_blue);
         }
         if (twin_properties.flag.green_led_found == 1) {
-            debug_printInfo("  APP: Desired rgb_led_green value = %d",
+            debug_printInfo("  APP: Found rgb_led_green = %d",
                     twin_properties.desired_led_green);
         }
         if (twin_properties.flag.red_led_found == 1) {
-            debug_printInfo("  APP: Desired rgb_led_red value = %d",
+            debug_printInfo("  APP: Found rgb_led_red = %d",
                     twin_properties.desired_led_red);
         }
         if (twin_properties.flag.telemetry_interval_found == 1) {
-            debug_printInfo("  APP: Found telemetryInterval value '%d'", telemetryInterval);
+            debug_printInfo("  APP: Found telemetryInterval value = %d", telemetryInterval);
         }
 
         update_leds(&twin_properties);
@@ -800,15 +799,25 @@ void APP_ReceivedFromCloud_twin(uint8_t* topic, uint8_t* payload) {
         if (twin_properties.flag.is_initial_get) {
             iothubConnected = true;
         }
-
         if (twin_properties.flag.user_led_found == 1) {
-            debug_printInfo("  APP: Found led_y Value '%s' (%d)",
+            debug_printInfo("  APP: Found led_user = '%s' (%d)",
                     LED_Property[twin_properties.desired_led_user - 1],
                     twin_properties.desired_led_user);
         }
-
+       if (twin_properties.flag.blue_led_found == 1) {
+            debug_printInfo("  APP: Found rgb_led_blue = %d",
+                    twin_properties.desired_led_blue);
+        }
+        if (twin_properties.flag.green_led_found == 1) {
+            debug_printInfo("  APP: Found rgb_led_green = %d",
+                    twin_properties.desired_led_green);
+        }
+        if (twin_properties.flag.red_led_found == 1) {
+            debug_printInfo("  APP: Found rgb_led_red = %d",
+                    twin_properties.desired_led_red);
+        }
         if (twin_properties.flag.telemetry_interval_found == 1) {
-            debug_printInfo("  APP: Found telemetryInterval Value '%d'", telemetryInterval);
+            debug_printInfo("  APP: Found telemetryInterval = %d", telemetryInterval);
         }
 
         update_leds(&twin_properties);

@@ -113,10 +113,10 @@ static const az_span command_resp_bad_payload_span         = AZ_SPAN_LITERAL_FRO
 static const az_span command_resp_error_processing_span    = AZ_SPAN_LITERAL_FROM_STR("Error processing command");
 static const az_span command_resp_not_supported_span       = AZ_SPAN_LITERAL_FROM_STR("{\"Status\":\"Unsupported Command\"}");
 
-static const az_span command_name_sendMsg_span               = AZ_SPAN_LITERAL_FROM_STR("sendMsg");
-static const az_span command_sendMsg_payload_span            = AZ_SPAN_LITERAL_FROM_STR("sendMsgString");
-static const az_span command_resp_empty_sendMsg_payload_span = AZ_SPAN_LITERAL_FROM_STR("Message string is empty. Specify string.");
-static const az_span command_resp_alloc_error_sendMsg_span   = AZ_SPAN_LITERAL_FROM_STR("Failed to allocate memory for the message.");
+static const az_span command_name_echoMsg_span               = AZ_SPAN_LITERAL_FROM_STR("echoMsg");
+static const az_span command_echoMsg_payload_span            = AZ_SPAN_LITERAL_FROM_STR("echoMsgString");
+static const az_span command_resp_empty_echoMsg_payload_span = AZ_SPAN_LITERAL_FROM_STR("Message string is empty. Specify string.");
+static const az_span command_resp_alloc_error_echoMsg_span   = AZ_SPAN_LITERAL_FROM_STR("Failed to allocate memory for the message.");
 
 static SYS_TIME_HANDLE reboot_task_handle = SYS_TIME_HANDLE_INVALID;
 
@@ -364,6 +364,7 @@ static az_result build_reboot_command_resp_payload(
 *   }
 * }
 **********************************************/
+#ifdef _ELIMINATE
 static az_result build_command_resp_payload(az_span response_span, az_span* response_payload_span)
 {
     az_json_writer jw;
@@ -371,6 +372,29 @@ static az_result build_command_resp_payload(az_span response_span, az_span* resp
     // Build the command response payload
     RETURN_ERR_IF_FAILED(start_json_object(&jw, response_span));
     RETURN_ERR_IF_FAILED(append_json_property_string(&jw, command_status_span, resp_success_span));
+    RETURN_ERR_IF_FAILED(end_json_object(&jw));
+    *response_payload_span = az_json_writer_get_bytes_used_in_destination(&jw);
+    return AZ_OK;
+}
+#endif /* _ELIMINATE */
+
+/**********************************************
+* Create JSON document for command response with status message
+* e.g.
+* {
+*   "status":200,
+*   "payload":{
+*     "echoMsgString":"<message>"
+*   }
+* }
+**********************************************/
+static az_result build_command_echo_payload(az_span response_span, az_span echo_msg_span, az_span* response_payload_span)
+{
+    az_json_writer jw;
+
+    // Build the command response payload
+    RETURN_ERR_IF_FAILED(start_json_object(&jw, response_span));
+    RETURN_ERR_IF_FAILED(append_json_property_string(&jw, command_echoMsg_payload_span, echo_msg_span));
     RETURN_ERR_IF_FAILED(end_json_object(&jw));
     *response_payload_span = az_json_writer_get_bytes_used_in_destination(&jw);
     return AZ_OK;
@@ -544,7 +568,7 @@ az_result send_telemetry_message(void)
 
     return rc;
 }
-
+#ifdef _ELIMINATE
 /**********************************************
 * Check if LED status has changed or not.
 * If any LED status has changed, update Device Twin
@@ -639,7 +663,7 @@ void check_led_status(twin_properties_t* twin_properties)
         }
     }
 }
-
+#endif /* _ELIMINATE */
 /**********************************************
 * Process LED Update/Patch
 * Sets the LEDs based on Device Twin from IoT Hub
@@ -700,13 +724,13 @@ void update_leds(
             RED_LED_Clear();
         }
     }
-/*
-    // If this is Twin Get, populate LED states for Red, Blue, Green LEDs
+#ifdef _ELIMINATE
+    // If this is Twin Get, update the PWM duty cycles for Red, Blue, Green LEDs
     if (twin_properties->flag.is_initial_get == 1)
     {
         check_led_status(twin_properties);
     }
-*/
+#endif /* _ELIMINATE */
 }
 
 /**********************************************
@@ -750,7 +774,7 @@ static int send_command_response(
 void reboot_task_callback(uintptr_t context)
 {
     debug_printWarn("AZURE: Rebooting...");
-    NVIC_SystemReset();
+    SYS_RESET_SoftwareReset();
 }
 
 /**********************************************
@@ -852,9 +876,9 @@ static az_result process_reboot_command(
 }
 
 /**********************************************
- *	Handle send message command
+ *	Handle echo message command
  **********************************************/
-static az_result process_sendMsg_command(
+static az_result process_echoMsg_command(
     az_span   payload_span,
     az_span   response_span,
     az_span*  out_response_span,
@@ -864,6 +888,7 @@ static az_result process_sendMsg_command(
     size_t         spanSize      = -1;
     char*          messageString = NULL;
     az_json_reader jr;
+    az_span        echo_msg_span;
 
     *out_response_status = AZ_IOT_STATUS_SERVER_ERROR;
 
@@ -877,7 +902,7 @@ static az_result process_sendMsg_command(
         {
             if (jr.token.kind == AZ_JSON_TOKEN_PROPERTY_NAME)
             {
-                if (az_json_token_is_text_equal(&jr.token, command_sendMsg_payload_span))
+                if (az_json_token_is_text_equal(&jr.token, command_echoMsg_payload_span))
                 {
                     if (az_result_failed(ret = az_json_reader_next_token(&jr)))
                     {
@@ -909,7 +934,7 @@ static az_result process_sendMsg_command(
         debug_printError("AZURE: Message string not found");
 
         ret = build_command_error_response_payload(response_span,
-                                                   command_resp_empty_sendMsg_payload_span,
+                                                   command_resp_empty_echoMsg_payload_span,
                                                    out_response_span);
 
         *out_response_status = AZ_IOT_STATUS_BAD_REQUEST;
@@ -919,7 +944,7 @@ static az_result process_sendMsg_command(
         debug_printError("AZURE: Message too big for TX Buffer %lu", spanSize);
 
         ret = build_command_error_response_payload(response_span,
-                                                   command_resp_alloc_error_sendMsg_span,
+                                                   command_resp_alloc_error_echoMsg_span,
                                                    out_response_span);
 
         *out_response_status = AZ_IOT_STATUS_BAD_REQUEST;
@@ -929,7 +954,7 @@ static az_result process_sendMsg_command(
         debug_printError("AZURE: Failed to allocate memory for message string : Size %ld", spanSize);
 
         ret = build_command_error_response_payload(response_span,
-                                                   command_resp_alloc_error_sendMsg_span,
+                                                   command_resp_alloc_error_echoMsg_span,
                                                    out_response_span);
 
         *out_response_status = AZ_IOT_STATUS_BAD_REQUEST;
@@ -947,8 +972,10 @@ static az_result process_sendMsg_command(
         /****LUC*****/
         SYS_CONSOLE_Message(0, messageString);
         debug_disable(false);
-        RETURN_ERR_IF_FAILED(build_command_resp_payload(response_span, out_response_span));
-
+        //RETURN_ERR_IF_FAILED(build_command_resp_payload(response_span, out_response_span));
+        echo_msg_span = az_span_create_from_str(messageString);
+        RETURN_ERR_IF_FAILED(build_command_echo_payload(response_span, echo_msg_span, out_response_span));
+        
         *out_response_status = AZ_IOT_STATUS_ACCEPTED;
     }
 
@@ -1006,16 +1033,16 @@ az_result process_direct_method_command(
         }
     }
 #ifdef IOT_PLUG_AND_PLAY_MODEL_ID
-    else if (az_span_is_content_equal(command_name_sendMsg_span, command_request->command_name))
+    else if (az_span_is_content_equal(command_name_echoMsg_span, command_request->command_name))
 #else
-    else if (az_span_is_content_equal(command_name_sendMsg_span, method_request->name))
+    else if (az_span_is_content_equal(command_name_echoMsg_span, method_request->name))
 #endif
     {
-        rc = process_sendMsg_command(payload_span, command_resp_span, &command_resp_span, &response_status);
+        rc = process_echoMsg_command(payload_span, command_resp_span, &command_resp_span, &response_status);
 
         if (az_result_failed(rc))
         {
-            debug_printError("AZURE: Failed process_sendMsg_command, status 0x%08x", rc);
+            debug_printError("AZURE: Failed process_echoMsg_command, status 0x%08x", rc);
             if (az_span_size(command_resp_span) == 0)
             {
                 // if response is empty, payload was not in the right format.
@@ -1397,9 +1424,9 @@ az_result process_device_twin_property(
                     twin_properties->flag.telemetry_interval_found = 1;
                     telemetryInterval                              = data;
                 }
-                else if (az_json_token_is_text_equal(&jr.token, led_yellow_property_name_span))
+                else if (az_json_token_is_text_equal(&jr.token, led_user_property_name_span))
                 {
-                    // found writable property to control Yellow LED
+                    // found writable property to control User LED
                     RETURN_ERR_IF_FAILED(az_json_reader_next_token(&jr));
                     RETURN_ERR_IF_FAILED(az_json_token_get_int32(&jr.token,
                                                                  &twin_properties->desired_led_user));
@@ -1570,8 +1597,35 @@ az_result send_reported_property(
             return rc;
         }
     }
-    // Add User LED to the reported property
-    // Example with integer Enum
+    
+    // Report: Firmware Version
+    if (twin_properties->flag.is_initial_get)
+    {
+        tstrM2mRev fwInfo;
+        char firmwareString[18] = {0}; // 8bit + 8bit + 8bit + 16bit + 3 dots
+
+        nm_get_firmware_full_info(&fwInfo);
+
+        sprintf(firmwareString, "%u.%u.%u.%u", 
+                    fwInfo.u8FirmwareMajor,
+                    fwInfo.u8FirmwareMinor,
+                    fwInfo.u8FirmwarePatch,
+                    fwInfo.u16FirmwareSvnNum);
+
+        debug_printInfo("  APP: WINC15x0 Firmware Version = %s", firmwareString);
+                    
+        if (az_result_failed(
+                rc = append_json_property_string(
+                    &jw,
+                    fw_version_property_name_span,
+                    az_span_create_from_str((char*)&firmwareString))))
+        {
+            debug_printError("AZURE: Unable to add property for Firmware Version, return code  0x%08x", rc);
+            return rc;
+        }
+    }
+    
+    // Report: User LED
     if (twin_properties->desired_led_user != LED_TWIN_NO_CHANGE)
     {
         led_property_value = get_led_value(led_status.state_flag.user);
@@ -1622,7 +1676,7 @@ az_result send_reported_property(
         }
     }
 
-    // Add Blue RGB LED to the reported property
+    // Report: *BLUE* RGB LED PWM Duty Cycle
     if (twin_properties->desired_led_blue != LED_TWIN_NO_CHANGE)
     {
         if (az_result_failed(
@@ -1668,7 +1722,7 @@ az_result send_reported_property(
         }
     }
     
-    // Add Green RGB LED to the reported property
+    // Report: *GREEN* RGB LED PWM Duty Cycle
     if (twin_properties->desired_led_green != LED_TWIN_NO_CHANGE)
     {
         if (az_result_failed(
@@ -1715,7 +1769,7 @@ az_result send_reported_property(
         }
     }
     
-    // Add Red RGB LED to the reported property
+    // Report: *RED* RGB LED PWM Duty Cycle
     if (twin_properties->desired_led_red != LED_TWIN_NO_CHANGE)
     {
         if (az_result_failed(
@@ -1762,7 +1816,7 @@ az_result send_reported_property(
         }
     }
     
-    // Set debug level
+    // Report: Debug Level
     if (twin_properties->flag.debug_level_found)
     {
         debug_setSeverity((debug_severity_t)twin_properties->debugLevel);
@@ -1810,51 +1864,8 @@ az_result send_reported_property(
             return rc;
         }
     }
-#ifdef _ELIMINATE
-    // Add Red LED
-    // Example with String Enum
-    if (twin_properties->flag.is_initial_get || twin_properties->reported_led_red != LED_TWIN_NO_CHANGE)
-    {
-        if (az_result_failed(
-                rc = append_json_property_int32(
-                    &jw,
-                    led_red_property_name_span,
-                    twin_properties->reported_led_red)))
-        {
-            debug_printError("AZURE: Unable to add property for Red LED, return code  0x%08x", rc);
-            return rc;
-        }
-    }
 
-    // Add Blue LED
-    if (twin_properties->flag.is_initial_get || twin_properties->reported_led_blue != LED_TWIN_NO_CHANGE)
-    {
-        if (az_result_failed(
-                rc = append_json_property_int32(
-                    &jw,
-                    led_blue_property_name_span,
-                    twin_properties->reported_led_blue)))
-        {
-            debug_printError("AZURE: Unable to add property for Blue LED, return code  0x%08x", rc);
-            return rc;
-        }
-    }
-
-    // Add Green LED
-    if (twin_properties->flag.is_initial_get || twin_properties->reported_led_green != LED_TWIN_NO_CHANGE)
-    {
-        if (az_result_failed(
-                rc = append_json_property_int32(
-                    &jw,
-                    led_green_property_name_span,
-                    twin_properties->reported_led_green)))
-        {
-            debug_printError("AZURE: Unable to add property for Green LED, return code  0x%08x", rc);
-            return rc;
-        }
-    }
-#endif /* _ELIMINATE */
-    // Add IP Address
+    // Report: IP Address
     if (twin_properties->flag.is_initial_get || twin_properties->flag.ip_address_updated != 0)
     {
         if (az_result_failed(
@@ -1870,6 +1881,76 @@ az_result send_reported_property(
         shared_networking_params.reported = 1;
     }
 
+#ifdef _ELIMINATE
+    // Report: Disable Telemetry
+    if (twin_properties->flag.is_initial_get || twin_properties->flag.telemetry_disable_found != 0)
+    {
+        telemetry_disable_flag = twin_properties->telemetry_disable_flag;
+
+        if (az_result_failed(
+#ifdef IOT_PLUG_AND_PLAY_MODEL_ID
+                rc = append_reported_property_response_int32(
+                    &jw,
+                    disable_telemetry_name_span,
+                    telemetry_disable_flag,
+                    AZ_IOT_STATUS_OK,
+                    twin_properties->version_num,
+                    resp_success_span)))
+#else
+                rc = append_json_property_int32(
+                    &jw,
+                    disable_telemetry_name_span,
+                    telemetry_disable_flag)))
+#endif
+        {
+            debug_printError("AZURE: Unable to add property for Telemetry Disabled Flag, return code 0x%08x", rc);
+            return rc;
+        }
+    }
+    
+   // Red LED
+    // Example with String Enum
+    if (twin_properties->flag.is_initial_get || twin_properties->reported_led_red != LED_TWIN_NO_CHANGE)
+    {
+        if (az_result_failed(
+                rc = append_json_property_int32(
+                    &jw,
+                    led_red_property_name_span,
+                    twin_properties->reported_led_red)))
+        {
+            debug_printError("AZURE: Unable to add property for Red LED, return code  0x%08x", rc);
+            return rc;
+        }
+    }
+
+    // Blue LED
+    if (twin_properties->flag.is_initial_get || twin_properties->reported_led_blue != LED_TWIN_NO_CHANGE)
+    {
+        if (az_result_failed(
+                rc = append_json_property_int32(
+                    &jw,
+                    led_blue_property_name_span,
+                    twin_properties->reported_led_blue)))
+        {
+            debug_printError("AZURE: Unable to add property for Blue LED, return code  0x%08x", rc);
+            return rc;
+        }
+    }
+
+    // Green LED
+    if (twin_properties->flag.is_initial_get || twin_properties->reported_led_green != LED_TWIN_NO_CHANGE)
+    {
+        if (az_result_failed(
+                rc = append_json_property_int32(
+                    &jw,
+                    led_green_property_name_span,
+                    twin_properties->reported_led_green)))
+        {
+            debug_printError("AZURE: Unable to add property for Green LED, return code  0x%08x", rc);
+            return rc;
+        }
+    }
+    
     // Add properties from UART
     if (twin_properties->flag.app_property_1_updated != 0)
     {
@@ -1962,55 +2043,7 @@ az_result send_reported_property(
             }
         }
     }
-
-    if (twin_properties->flag.is_initial_get || twin_properties->flag.telemetry_disable_found != 0)
-    {
-        telemetry_disable_flag = twin_properties->telemetry_disable_flag;
-
-        if (az_result_failed(
-#ifdef IOT_PLUG_AND_PLAY_MODEL_ID
-                rc = append_reported_property_response_int32(
-                    &jw,
-                    disable_telemetry_name_span,
-                    telemetry_disable_flag,
-                    AZ_IOT_STATUS_OK,
-                    twin_properties->version_num,
-                    resp_success_span)))
-#else
-                rc = append_json_property_int32(
-                    &jw,
-                    disable_telemetry_name_span,
-                    telemetry_disable_flag)))
-#endif
-        {
-            debug_printError("AZURE: Unable to add property for Telemetry Disabled Flag, return code 0x%08x", rc);
-            return rc;
-        }
-    }
-
-    if (twin_properties->flag.is_initial_get)
-    {
-        tstrM2mRev fwInfo;
-        char firmwareString[18] = {0}; // 8bit + 8bit + 8bit + 16bit + 3 dots
-
-        nm_get_firmware_full_info(&fwInfo);
-
-        sprintf(firmwareString, "%u.%u.%u.%u", 
-                    fwInfo.u8FirmwareMajor,
-                    fwInfo.u8FirmwareMinor,
-                    fwInfo.u8FirmwarePatch,
-                    fwInfo.u16FirmwareSvnNum);
-
-        if (az_result_failed(
-                rc = append_json_property_string(
-                    &jw,
-                    fw_version_property_name_span,
-                    az_span_create_from_str((char*)&firmwareString))))
-        {
-            debug_printError("AZURE: Unable to add property for Firmware Version, return code  0x%08x", rc);
-            return rc;
-        }
-    }
+#endif /* _ELIMINATE */
 
     // Close JSON Payload (appends "}")
 #ifdef IOT_PLUG_AND_PLAY_MODEL_ID
@@ -2228,6 +2261,7 @@ bool send_property_from_uart(int cmdIndex, char* data)
 
     return true;
 }
+
 bool process_sendString_command(char* data)
 {
     az_result      rc = AZ_OK;

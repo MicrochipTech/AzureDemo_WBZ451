@@ -35,17 +35,17 @@
 #define LED_ON  false
 #define LED_OFF true
 
-#define LED_YELLOW_SetHigh_EX()// LED_DAT_GPIO_PA11_Set()
+#define LED_USER_SetHigh_EX()// LED_DAT_GPIO_PA11_Set()
 #define LED_GREEN_SetHigh_EX() // LED_CON_GPIO_PA20_Set()
 #define LED_BLUE_SetHigh_EX()  // LED_WIFI_GPIO_PA21_Set()
 #define LED_RED_SetHigh_EX()   // LED_ERR_GPIO_PA25_Set()
-//
-#define LED_YELLOW_SetLow_EX() //LED_DAT_GPIO_PA11_Clear()
+
+#define LED_USER_SetLow_EX() //LED_DAT_GPIO_PA11_Clear()
 #define LED_GREEN_SetLow_EX()  //LED_CON_GPIO_PA20_Clear()
 #define LED_BLUE_SetLow_EX()   //LED_WIFI_GPIO_PA21_Clear()
 #define LED_RED_SetLow_EX()    //LED_ERR_GPIO_PA25_Clear()
-//
-#define LED_YELLOW_Toggle_EX() //LED_DAT_GPIO_PA11_Toggle()
+
+#define LED_USER_Toggle_EX() //LED_DAT_GPIO_PA11_Toggle()
 #define LED_GREEN_Toggle_EX()  //LED_CON_GPIO_PA20_Toggle()
 #define LED_BLUE_Toggle_EX()   //LED_WIFI_GPIO_PA21_Toggle()
 #define LED_RED_Toggle_EX()    //LED_ERR_GPIO_PA25_Toggle()
@@ -109,15 +109,15 @@ typedef enum
     LED_INDICATOR_ERROR   = (1 << 2)
 } led_indicator_name_t;
 
-void LED_test(void);
+//void LED_test(void);
 void LED_init(void);
 
-void LED_SetBlue(led_set_state_t newState);
-void LED_SetGreen(led_set_state_t newState);
+//void LED_SetBlue(led_set_state_t newState);
+//void LED_SetGreen(led_set_state_t newState);
 void LED_SetUser(led_set_state_t newState);
-void LED_SetRed(led_set_state_t newState);
-void LED_ToggleRed(void);
-void LED_SetWiFi(led_indicator_name_t state);
-void LED_SetCloud(led_indicator_name_t state);
+//void LED_SetRed(led_set_state_t newState);
+//void LED_ToggleRed(void);
+//void LED_SetWiFi(led_indicator_name_t state);
+//void LED_SetCloud(led_indicator_name_t state);
 
 #endif /* LED_H_ */
