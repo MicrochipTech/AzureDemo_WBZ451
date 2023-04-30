@@ -57,8 +57,8 @@
 
 #define TELEMETRY_INDEX_MAX 14
 
-const char* const cli_version_number      = "2.0";
-const char* const firmware_version_number = "2.0.0";
+const char* const cli_version_number      = "1.0";
+const char* const firmware_version_number = "1.0.0";
 static char*      ateccsn                 = NULL;
 
 static void reconnect_cmd(SYS_CMD_DEVICE_NODE* pCmdIO, int argc, char** argv);
