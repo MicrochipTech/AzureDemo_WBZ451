@@ -119,7 +119,7 @@ On successful authentication, the WBZ451 Curiosity Development Board will be pro
 
 This is the high-level view of the "Embedded C" SDK which translates the application code into Azure-friendly logic that can be easily understood by Azure IoT Hub. Note that Microsoft is only responsible for the logic in the green box; it is up to the IoT Developer to provide the remaining layers of application code, Transport Client, TLS, and Socket. In the provided demo project, Microchip provides the layers in blue. Please reference the [Azure SDK for Embedded C](https://github.com/Azure/azure-sdk-for-c/tree/78a280b7160201cf10a106e8499e03eec88ea582) document for more details.
 
-<img src=".//media/image7.png" style="width:4in;height:4in"/>
+<img src=".//media/image7.png" width=400/>
 
 ### TLS connection
 
@@ -179,11 +179,11 @@ As a solution builder, you can use IoT Central to develop a cloud-hosted IoT sol
 
     - Open a serial terminal (e.g. PuTTY, TeraTerm, etc.) and connect to the COM port corresponding to your board at `115200 baud` (e.g. open PuTTY Configuration window &gt; choose `session` &gt; choose `Serial`&gt; Enter the right COMx port). You can find the COM info by opening your PC’s `Device Manager` &gt; expand `Ports(COM & LPT)` &gt; take note of `Curiosity Virtual COM Port` 
 
-        <img src=".//media/image27.png">
+        <img src=".//media/image27.png" width=400/>
 
 4. Before typing anything in the terminal emulator window, **disable** the local echo feature in the terminal settings for best results.  In the terminal window, hit `[RETURN]` to bring up the Command Line Interface prompt (which is simply the `>` character). Type `help` and then hit `[RETURN]` to get the list of available commands for the CLI implemented in the board's firmware.  The Command Line Interface allows you to send simple ASCII-string commands to set or get the user-configurable operating parameters of the application while it is running.
 
-    <img src=".//media/image44.png" style="width:5.in;height:3.18982in" alt="A screenshot of a cell phone Description automatically generated" />
+    <img src=".//media/image44.png" width=450/>
 
 5. Press the `RESET` button on the WBZ451 Curiosity board and then immediately turn your attention to the terminal window.
 
@@ -258,43 +258,43 @@ IoT Central allows you to create an application dashboard to monitor the telemet
 
 4. To access any of your IoT Central applications in the future, you can also go to [Azure IoT Central](https://apps.azureiotcentral.com) and click on `My apps`
 
-    <img src=".//media/image108.png" style="width:5.in;height:1.98982in" alt="A screenshot of a cell phone Description automatically generated" />
+    <img src=".//media/image108.png" width=200/>
 
 ## Create an Enrollment Group
 
 1. Using the left-hand side navigation pane of your IoT Central application, select `Security` &gt; `Permissions` &gt; `Device connection groups`
 
-   <img src=".//media/image81a.png" style="width:6.5.in;height:3.63506in" />
+    <img src=".//media/image81a.png" width=200/>
 
 2. Click on the `+ New` button and create a new enrollment group using any name (with Group type = `IoT devices` and attestation type = `Certificates (X.509)`).  Hit the `Save` icon when finished
 
-   <img src=".//media/image81b.png" style="width:6.5.in;height:3.63506in" />
+    <img src=".//media/image81b.png" width=300/>
 
 3. Now that the new enrollment group has been created, click on `+ Manage Primary`
 
-   <img src=".//media/image82.png" style="width:5.5.in;height:2.53506in" />
+    <img src=".//media/image82.png" width=300/>
 
 4. Click on `+ Add certificate` and browse to the **signer** certificate file (i.e. the `signer.pem` file that was created in a previous step). Click the `Upload` button (then click on `Close` when the certificate has been accepted)
 
-   <img src=".//media/image75.png" style="width:5.5.in;height:2.13506in" />
+    <img src=".//media/image75.png" width=250/>
 
 5. Click on the `Save` icon at the top of the page, and note the ID Scope which was created for the enrollment group. The X.509 enrollment group has been successfully created and should be ready to go!
 
-    <img src=".//media/image83.png" style="width:5.in;height:2.18982in" alt="A screenshot of a cell phone Description automatically generated" />
+    <img src=".//media/image83.png" width=400/>
 
 ## Test the Plug and Play Device
 
 1. Launch a terminal emulator window and connect to the COM port corresponding to the WBZ451 Curiosity board at `115200` baud (**disable** local echo for the terminal settings for best results).  If there are continuous non-stop messages being displayed on the terminal, disable them by typing `debug 0` followed by `[RETURN]`. Hit `[RETURN]` a couple of times to bring up the Command Line Interface prompt (which is simply the `>` character). Type `help` and then hit `[RETURN]` to get the list of available commands for the CLI.  The Command Line Interface allows you to send simple ASCII-string commands to set or get the user-configurable operating parameters of the application while it is running.
 
-    <img src=".//media/image44.png" style="width:5.in;height:3.18982in" alt="A screenshot of a cell phone Description automatically generated" />
+    <img src=".//media/image44.png" width=450/>
 
 2.	Look up the `ID Scope` for your IoT Central application (navigate to your application's web page and using the left-hand navigation pane, select `Permissions` > `Device connection groups`).  The `ID Scope` will be programmed/saved into the [ATECC608B](https://www.microchip.com/wwwproducts/en/atecc608b) secure element on the ATECC608B TRUST board in the next step
 
-    <img src=".//media/image84a.png" style="width:5.in;height:3.18982in" alt="A screenshot of a cell phone Description automatically generated" />
+    <img src=".//media/image84a.png" width=450/>
 
 3. In the terminal emulator window, hit `[RETURN]` to bring up the Command Line Interface prompt (which is simply the `>` character>). At the CLI prompt, type in the `idscope <your_ID_scope>` command to set it (which gets saved in the [ATECC608B](https://www.microchip.com/wwwproducts/en/atecc608b) secure element on the board) and then hit `[RETURN]`.  The ID Scope can be read out from the board by issuing the `idscope` command without specifying any parameter on the command line - confirm that the ID Scope has been read back correctly before proceeding to the next step
 
-    <img src=".//media/image85.png" style="width:5.in;height:3.18982in" alt="A screenshot of a cell phone Description automatically generated" />
+    <img src=".//media/image85.png" width=450/>
 
     NOTE: Make sure the ID scope reads back correctly. If not, keep repeating the write/read sequence until the correct ID scope has been read back from the board
 
@@ -313,11 +313,11 @@ IoT Central allows you to create an application dashboard to monitor the telemet
 
 8. [OPTIONAL] If desired, change the Device name by clicking on `Manage device` > `Rename`
 
-    <img src=".//media/image87.png" style="width:5.in;height:1.18982in" alt="A screenshot of a cell phone Description automatically generated" />
+    <img src=".//media/image87.png" width=350/>
 
 9. Click on the `Commands` tab; type `PT5S` in the `Delay before reboot operation` field and then click on `Run` to send the command to the device to reboot in 5 seconds
 
-    <img src=".//media/image88.png" style="width:5.in;height:1.58982in" alt="A screenshot of a cell phone Description automatically generated" />
+    <img src=".//media/image88.png" width=400/>
 
 10. Within 5 seconds of sending the Reboot command, the development board should reset itself. Wait a minute or two and periodically issue the `cloud` command until the status is displayed/returned as "true". Locate the button labeled `USR-BTN` on the board and press it a few times.
 
