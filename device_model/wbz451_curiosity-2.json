@@ -42,6 +42,17 @@
             }
         },
         {
+            "@type": "Telemetry",
+            "description": {
+                "en": "Message string (ASCII) sent as a telemetry event"
+            },
+            "displayName": {
+                "en": "Message Event"
+            },
+            "name": "messageEvent",
+            "schema": "string"
+        },
+        {
             "@type": [
                 "Property",
                 "StringValue"

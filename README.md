@@ -25,6 +25,7 @@
 - [Create an IoT Central Application](#create-an-iot-central-application)
 - [Create an Enrollment Group](#create-an-enrollment-group)
 - [Test the Plug and Play Device](#test-the-plug-and-play-device)
+- [BLE Mobile Application](#ble-mobile-application)
 - [Creating a Dashboard for Custom Data Visualization](#creating-a-dashboard-for-custom-data-visualization)
 - [Frequently Asked Questions](#frequently-asked-questions)
 - [References](#references)
@@ -342,6 +343,12 @@ IoT Central allows you to create an application dashboard to monitor the telemet
     NOTE: Depending how quickly the write property response is received, it is possible that IoT Central will show the value as "Pending". If the device is offline or doesn't respond to a writable property request, the value can display as "Pending" indefinitely in IoT Central until a valid property update acknowledge has been received from the device.
 
 15. Click on the `About` tab to conveniently view all of the device's property settings/states on a single page.
+
+## BLE Mobile Application
+
+A sample BLE mobile application (tested on Android 12 & 13 operating systems) is provided to demonstrate ASCII message strings being sent/received from a smartphone to/from the cloud. The sample BLE application was developed using the [MIT App Inventor](https://appinventor.mit.edu). Refer to the [About App Inventor page](https://appinventor.mit.edu/about-us) for details on how to load the sample project into the visual programming environment to make changes for creating your own customized mobile application.
+
+Since the combined hardware of this demo platform supports both BLE 5.2 and 2.4 GHz Wi-Fi wireless connectvity, it can be used as a bridge between BLE (mobile device) & Wi-Fi (cloud). Click [here](./WBZ451_BLE_Mobile_App.md) for instructions on setting up and running the mobile application.
 
 ## Creating a Dashboard for Custom Data Visualization
 
