@@ -2,9 +2,13 @@
 
 ## Introduction
 
- This document describes how to connect the WBZ451 Curiosity Development Board to Azure IoT Central. The embedded firmware demo project leverages Microsoft’s Azure IoT "Embedded C" SDK. Secure connections are made possible by using CA-signed X.509 certificate-based authentication between the server and client.
+This document describes how to connect the WBZ451 Curiosity Development Board to Azure IoT Central. The embedded firmware demo project leverages Microsoft’s Azure IoT "Embedded C" SDK. Secure connections are made possible by using CA-signed X.509 certificate-based authentication between the server and client.
 
-<img src=".//media/image1.png" />
+Microchip’s PIC32CX-BZ2 family includes System-on-Chip (SoC) devices as well as global regulatory-certified, RF-ready modules. In addition to Bluetooth Low Energy, the chip supports Zigbee stacks and Over the Air (OTA) update capabilities.
+
+The hardware includes a 12-bit analog to digital converter (ADC), multiple timer/counters for control (TCC) channels, an on-board encryption engine, and a broad set of interfaces to touch, CAN, sensor, display and other peripherals. The 1 MB of Flash memory supports large application codes, multiprotocol wireless stacks and OTA updates. AEC-Q100 Grade 1 (125 °C) qualified packages further simplify wireless connectivity integration where highly robust solutions are required.
+
+<img src=".//media/PIC32CX-BZ2_BlockDiagram.png" width=600/>
 
 ## Table of Contents
 
@@ -336,7 +340,7 @@ IoT Central allows you to create an application dashboard to monitor the telemet
 
 13. Click [here](./DeviceTemplate_CreatingViews.md) to create an additional "Properties" view that allows you to change any of the Cloud-writable properties. Once this new view has been added to the device template, click on the Properties view and type in a new value for the Telemetry Interval. Click on the **Save** icon to send the property update request to the physical device. You should see the status of the property listed as "Pending" until a confirmation has been received from the physical device that the property was successfully updated. At this point in time, the status of the property should revert back to the "Accepted" state.
 
-    <img src="./media/IOTC_WriteTelemetryInterval.png" alt="The IOTC Raw Data view of light sensor data" width = 500/>
+    <img src=".//media/Properties_tab.png" width=400/>
 
 14. Click on the `Properties` tab and try changing the 3 PWM duty cycle properties of the RGB LED to 100% (remember to hit the `Save` icon for each property write operation to take effect). Confirm that the RGB LED lights up based on different combinations of 0% and/or 100% duty cycle values. In addition, try changing the state of the User LED to On, Off, and Blinking.
 
@@ -349,6 +353,8 @@ IoT Central allows you to create an application dashboard to monitor the telemet
 A sample BLE mobile application (tested on Android 12 & 13 operating systems) is provided to demonstrate ASCII message strings being sent/received from a smartphone to/from the cloud. The sample BLE application was developed using the [MIT App Inventor](https://appinventor.mit.edu). Refer to the [About App Inventor page](https://appinventor.mit.edu/about-us) for details on how to load the sample project into the visual programming environment to make changes for creating your own customized mobile application.
 
 Since the combined hardware of this demo platform supports both BLE 5.2 and 2.4 GHz Wi-Fi wireless connectvity, it can be used as a bridge between BLE (mobile device) & Wi-Fi (cloud). Click [here](./WBZ451_BLE_Mobile_App.md) for instructions on setting up and running the mobile application.
+
+<img src=".//media/BLE-2-Cloud_Bridge.png" width=600/>
 
 ## Creating a Dashboard for Custom Data Visualization
 

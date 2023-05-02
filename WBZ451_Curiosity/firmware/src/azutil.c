@@ -98,7 +98,7 @@ static const az_span app_property_3_name_span = AZ_SPAN_LITERAL_FROM_STR("proper
 static const az_span app_property_4_name_span = AZ_SPAN_LITERAL_FROM_STR("property_4");
 
 // Firmware Version Property
-static const az_span fw_version_property_name_span = AZ_SPAN_LITERAL_FROM_STR("firmwareVersion");
+static const az_span fw_version_property_name_span = AZ_SPAN_LITERAL_FROM_STR("WINC_FW_version");
 
 static const az_span disable_telemetry_name_span = AZ_SPAN_LITERAL_FROM_STR("disableTelemetry");
 static uint32_t telemetry_disable_flag = 0;

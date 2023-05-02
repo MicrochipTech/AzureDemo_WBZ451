@@ -75,7 +75,7 @@
             "displayName": {
                 "en": "ATWINC15x0 FW Version"
             },
-            "name": "firmwareVersion",
+            "name": "WINC_FW_version",
             "schema": "string",
             "writable": false
         },

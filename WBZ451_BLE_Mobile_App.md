@@ -1,5 +1,7 @@
 # BLE Mobile App for the WBZ451 Curiosity Development Board
 
+<img src=".//media/BLE-2-Cloud_Bridge.png" width=600/>
+
 ## Setting up the BLE Mobile App
 
 1. Locate the APK (Android Package Kit) file (e.g. "WBZ451_BLE_Azure.apk") in the [mobile_app](./mobile_app/) folder.
