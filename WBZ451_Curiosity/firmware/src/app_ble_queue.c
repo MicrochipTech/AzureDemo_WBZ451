@@ -142,12 +142,7 @@ void parseCmd(uint8_t* pWrBuffer, size_t size)
     {
         pWrBuffer += strlen("+MSG:");
         size -= strlen("+MSG:");
-        /*LUC_AZURE*/
-        //process_telemetry_command(1, pWrBuffer);
-        //BLUE_LED_Toggle();
-        process_sendString_command(pWrBuffer);
-        /*LUC_AZURE*/
-        
+        process_telemetry_command(15, pWrBuffer);      
         return;
     }
     if (strstr(pWrBuffer, "+STATUS:"))

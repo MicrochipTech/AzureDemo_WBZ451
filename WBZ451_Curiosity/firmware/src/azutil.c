@@ -53,6 +53,7 @@ static const az_span iot_hub_property_desired_version = AZ_SPAN_LITERAL_FROM_STR
 
 static const az_span telemetry_name_temperature_span = AZ_SPAN_LITERAL_FROM_STR("temperature");
 //static const az_span telemetry_name_light_span       = AZ_SPAN_LITERAL_FROM_STR("light");
+static const az_span telemetry_name_message_event_span = AZ_SPAN_LITERAL_FROM_STR("messageEvent");
 
 static const az_span telemetry_name_long       = AZ_SPAN_LITERAL_FROM_STR("telemetry_Lng");
 static const az_span telemetry_name_bool       = AZ_SPAN_LITERAL_FROM_STR("telemetry_Bool");
@@ -2202,6 +2203,11 @@ bool process_telemetry_command(int cmdIndex, char* data)
             append_json_property_string(&jw, telemetry_name_string_4, az_span_create_from_str(data));
         }
         break;
+        case 15:
+        {
+            // Telemetry Message Event (string)
+            append_json_property_string(&jw, telemetry_name_message_event_span, az_span_create_from_str(data));
+        }
     }
 
     end_json_object(&jw);

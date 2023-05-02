@@ -3,6 +3,7 @@
 *.map
 *.d
 *.bin
+*.pem
 **/*.X/debug
 **/*.X/dist
 **/*.X/build
