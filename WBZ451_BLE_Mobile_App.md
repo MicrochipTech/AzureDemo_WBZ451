@@ -2,7 +2,7 @@
 
 <img src=".//media/BLE-2-Cloud_Bridge.png" width=600/>
 
-## Setting up the BLE Mobile App
+## Installing the BLE Mobile App
 
 1. Locate the APK (Android Package Kit) file (e.g. "WBZ451_BLE_Azure.apk") in the [mobile_app](./mobile_app/) folder.
 
@@ -38,15 +38,15 @@
 
     <img src=".//media/ble_run_11.png" width=400/>
 
-12. In the mobile app, verify that the text message is displayed under `Echo Message String (ASCII)`.
+12. In the mobile app, verify that the text message is displayed under `Echo Message String Received (ASCII)`.
 
 13. Touch the `DISCONNECT` button to properly disconnect from the WBZ451 Curiosity board.
 
-## Modifying the BLE Mobile App
+## Building the BLE Mobile App
 
 1. The MIT App Inventor is a web-based tool used for creating mobile apps for Android devices. Go to the [MIT App Inventor](https://appinventor.mit.edu) web site and click on the `Create Apps!` button at the top of the page.
 
-2. Using a File Explorer (or equivalent) window, navigate to the [Mobile_App](./Mobile_App/) folder. Copy the `WBZ451_TRUST_WiFi7.aia` file and rename it.
+2. Using a File Explorer (or equivalent) window, navigate to the [mobile_app](./mobile_app/) folder. Copy the `WBZ451_TRUST_WiFi7.aia` file and rename it.
 
 2. Using the main toolbar at the top of the page, click on the Projects drop-down menu and select `Import project (.aia) from my computer`.
 
@@ -61,4 +61,12 @@
 6. Using the main toolbar at the top of the page, click on `Guide` to learn all the details on how to configure mobile apps using the MIT App Inventor web-based tool.
 
     <img src=".//media/ble_mod_07.png" width=500/>
+
+## References - Additional Resources
+
+- [MIT App Inventor Library: Documentation & Support](https://appinventor.mit.edu/explore/library)
+
+- [Microchip University](https://mu.microchip.com): [Rapid Prototyping Bluetooth Low Energy (BLE) Android Apps using MIT App Inventor](https://mu.microchip.com/rapid-prototyping-bluetooth-low-energy-ble-android-apps-using-mit-app-inventor)
+
+    About this course: This class will give the engineer a hands-on introduction to Android App development using MIT App Inventor. The material explained in this class will cover the steps required to develop an Android App that interacts with the AVR-BLE board. Prior knowledge of the basic Bluetooth® Low Energy (BLE) protocol is required and will not be covered in this class. Covered topics include:  BLE scanning, BLE connection, BLE services, BLE characteristics, UUID’s and MAC addresses.
 

@@ -328,7 +328,7 @@ IoT Central allows you to create an application dashboard to monitor the telemet
 
     <img src=".//media/WBZ451_USR-BTN.png" width=375/>
 
-11. Click on the `Raw data` tab and confirm that the button press telemetry messages were received (scroll the page to the right to view the `SW2 Button Press` column)
+11. Click on the `Raw data` tab and confirm that the button press telemetry messages were received (scroll the page to the right to view the `Button Press` column)
 
     <img src=".//media/image90.png" width=300/>
 
