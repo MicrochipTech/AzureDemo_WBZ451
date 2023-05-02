@@ -69,7 +69,7 @@ static const az_span property_telemetry_interval_span = AZ_SPAN_LITERAL_FROM_STR
 button_press_data_t button_press_data = {0};
 static char         button_event_buffer[128];
 
-static const az_span event_name_button_event_span = AZ_SPAN_LITERAL_FROM_STR("button_event");
+static const az_span event_name_button_press_span = AZ_SPAN_LITERAL_FROM_STR("buttonPress");
 static const az_span event_name_button_name_span  = AZ_SPAN_LITERAL_FROM_STR("button_name");
 static const az_span event_name_button_sw0_span   = AZ_SPAN_LITERAL_FROM_STR("SW0");
 static const az_span event_name_button_sw1_span   = AZ_SPAN_LITERAL_FROM_STR("SW1");
@@ -405,7 +405,7 @@ static az_result build_command_echo_payload(az_span response_span, az_span echo_
 * Append JSON key-value pairs for button name and button press count
 * e.g.
 * {
-*   "button_event" :
+*   "buttonPress" :
 *   {
 *     "button_name" : "USR-BTN",
 *     "press_count" : 7
@@ -417,7 +417,7 @@ static az_result append_button_press_telemetry(
     az_span         button_name_span,
     int32_t         press_count)
 {
-    RETURN_ERR_IF_FAILED(az_json_writer_append_property_name(jw, event_name_button_event_span));
+    RETURN_ERR_IF_FAILED(az_json_writer_append_property_name(jw, event_name_button_press_span));
     RETURN_ERR_IF_FAILED(az_json_writer_append_begin_object(jw));
     RETURN_ERR_IF_FAILED(append_json_property_string(jw, event_name_button_name_span, button_name_span));
     RETURN_ERR_IF_FAILED(append_json_property_int32(jw, event_name_press_count_span, press_count));

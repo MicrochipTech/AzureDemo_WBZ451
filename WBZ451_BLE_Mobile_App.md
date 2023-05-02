@@ -4,7 +4,7 @@
 
 ## Installing the BLE Mobile App
 
-1. Locate the APK (Android Package Kit) file (e.g. "WBZ451_BLE_Azure.apk") in the [mobile_app](./mobile_app/) folder.
+1. Locate the APK (Android Package Kit) file (e.g. "WBZ451_TRUST_WiFi7.apk") in the [mobile_app](./mobile_app/) folder.
 
 2. Transfer the APK file to your smartphone. For example, you could use Google drive to copy the APK file to the cloud and then access it from the smartphone.
 
@@ -32,7 +32,7 @@
 
 10. In the cloud app, click on the `Raw Data` tab and verify that the telemetry message was received and the correct message is displayed under the `Message Event` column.
 
-    <img src=".//media/ble_run_10.png" width=600/>
+    <img src=".//media/ble_run_10.png" width=800/>
 
 11. In the cloud app, click on the `Commands` tab. Using the `Echo Message` command box, type in a text message for `String to echo`. Click the `Run` button.
 

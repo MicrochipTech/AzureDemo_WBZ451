@@ -506,7 +506,7 @@ void APP_Tasks(void) {
 #else
             CLOUD_init_host(hub_hostname, attDeviceID, &pf_mqtt_iothub_client);
 #endif   // CFG_MQTT_PROVISIONING_HOST
-#if(1)
+#if(_ELIMINATE)
 #define SSID "NETGEAR51"
 #define PWD "melodicship232"
 #define MODE "2"
