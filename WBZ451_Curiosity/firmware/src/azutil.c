@@ -425,6 +425,40 @@ static az_result append_button_press_telemetry(
     return AZ_OK;
 }
 
+void send_test_button_message(void)
+{
+    az_span        button_event_payload_span = AZ_SPAN_FROM_BUFFER(button_event_buffer);
+    az_json_writer jw;
+    az_result      rc = AZ_OK;
+
+    RETURN_IF_FAILED(start_json_object(&jw, button_event_payload_span));
+    RETURN_IF_FAILED(append_button_press_telemetry(&jw, event_name_button_sw0_span, button_press_data.sw0_press_count));
+    RETURN_IF_FAILED(end_json_object(&jw));
+
+    button_event_payload_span = az_json_writer_get_bytes_used_in_destination(&jw);
+
+#ifdef IOT_PLUG_AND_PLAY_MODEL_ID
+    rc = az_iot_pnp_client_telemetry_get_publish_topic(
+        &pnp_client,
+        AZ_SPAN_EMPTY,
+#else
+    rc = az_iot_hub_client_telemetry_get_publish_topic(
+        &iothub_client,
+#endif
+        NULL,
+        pnp_telemetry_topic_buffer,
+        sizeof(pnp_telemetry_topic_buffer),
+        NULL);
+
+    if (az_result_succeeded(rc))
+    {
+        CLOUD_publishData((uint8_t*)pnp_telemetry_topic_buffer,
+                          az_span_ptr(button_event_payload_span),
+                          az_span_size(button_event_payload_span),
+                          1);
+    }
+    return;
+}
 
 /**********************************************
 * Check if button(s) was pressed.
@@ -1707,7 +1741,7 @@ az_result send_reported_property(
                 rc = append_reported_property_response_int32(
                     &jw,
                     led_blue_property_name_span,
-                    twin_properties->desired_led_blue,
+                    0,
                     AZ_IOT_STATUS_OK,
                     1,
                     resp_success_span)))
@@ -1754,7 +1788,7 @@ az_result send_reported_property(
                 rc = append_reported_property_response_int32(
                     &jw,
                     led_green_property_name_span,
-                    twin_properties->desired_led_green,
+                    0,
                     AZ_IOT_STATUS_OK,
                     1,
                     resp_success_span)))
@@ -1801,7 +1835,7 @@ az_result send_reported_property(
                 rc = append_reported_property_response_int32(
                     &jw,
                     led_red_property_name_span,
-                    twin_properties->desired_led_red,
+                    0,
                     AZ_IOT_STATUS_OK,
                     1,
                     resp_success_span)))

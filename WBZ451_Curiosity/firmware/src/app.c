@@ -876,6 +876,10 @@ int32_t APP_GetLightSensorValue(void) {
 void APP_SendToCloud(void) {
     if (iothubConnected) {
         send_telemetry_message();
+#ifdef _CERTIFICATION_TEST
+        send_test_button_message();
+        process_telemetry_command(15, "Hello Certification Tester"); 
+#endif /* _CERTIFICATION_TEST */        
     }
 }
 
