@@ -354,7 +354,7 @@ IoT Central allows you to create an application dashboard to monitor the telemet
 
 A sample BLE mobile application (tested on Android 12 & 13 operating systems) is provided to demonstrate ASCII message strings being sent/received from a smartphone to/from the cloud. The sample BLE application was developed using the [MIT App Inventor](https://appinventor.mit.edu). Refer to the [About App Inventor page](https://appinventor.mit.edu/about-us) for details on how to load the sample project into the visual programming environment to make changes for creating your own customized mobile application.
 
-Since the combined hardware of this demo platform supports both BLE 5.2 and 2.4 GHz Wi-Fi wireless connectvity, it can be used as a bridge between BLE (mobile device) & Wi-Fi (cloud). Click [here](./WBZ451_BLE_Mobile_App.md) for instructions on setting up and running the mobile application.
+Since the combined hardware of this demo platform supports both BLE 5.2 and 2.4 GHz Wi-Fi wireless connectivity, it can be used as a bridge between BLE (mobile device) & Wi-Fi (cloud). Click [here](./WBZ451_BLE_Mobile_App.md) for instructions on setting up and running the mobile application.
 
 <img src=".//media/BLE-2-Cloud_Bridge.png" width=600/>
 

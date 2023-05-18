@@ -892,8 +892,9 @@ static az_result process_reboot_command(
                                                                reboot_delay_seconds,
                                                                out_response_span));
 
-        *out_response_status = AZ_IOT_STATUS_ACCEPTED;
-
+        //*out_response_status = AZ_IOT_STATUS_ACCEPTED;
+        *out_response_status = AZ_IOT_STATUS_OK;
+        
         debug_printInfo("AZURE: Scheduling reboot in %d sec", reboot_delay_seconds);
 
         reboot_task_handle = SYS_TIME_CallbackRegisterMS(reboot_task_callback,
@@ -1011,7 +1012,8 @@ static az_result process_echoMsg_command(
         echo_msg_span = az_span_create_from_str(messageString);
         RETURN_ERR_IF_FAILED(build_command_echo_payload(response_span, echo_msg_span, out_response_span));
         
-        *out_response_status = AZ_IOT_STATUS_ACCEPTED;
+        //*out_response_status = AZ_IOT_STATUS_ACCEPTED;
+        *out_response_status = AZ_IOT_STATUS_OK;
     }
 
     if (messageString)
