@@ -2,7 +2,7 @@
 
 ## Background
 
-The ATWINC1510 module on the WiFi7 click board needs to be updated with a minimum firmware version of 19.7.7. Most WiFi7 clicks have ATWINC1510 modules programmed with an older firmware version of 19.5.2 which will **not** work with any demos which require authenticating with and connecting to Azure IoT services.
+The ATWINC1500 module on the WiFi7 click board needs to be updated with a minimum firmware version of 19.7.7. Most WiFi7 clicks have ATWINC1500 modules programmed with an older firmware version of 19.5.2 which will **not** work with any demos which require authenticating with and connecting to Azure IoT services.
 
 ## Software Requirements
 
