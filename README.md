@@ -52,9 +52,10 @@ The hardware includes a 12-bit analog to digital converter (ADC), multiple timer
 
     <img src=".//media/WiFi7_click.png" width=125/>
 
-* Serial Bridge for Host PC Connection to WiFi7 click board: ["ATSAMD21 Xplained Pro Evaluation Kit"](https://www.microchip.com/en-us/development-tool/atsamd21-xpro) is used only once as a vehicle for updating the firmware for the ATWINC1500 Wi-Fi module on the WiFi7 click board.
+* Serial Bridge for Host PC Connection to WiFi7 click board: The combination of the ["ATSAMD21 Xplained Pro Evaluation Kit"](https://www.microchip.com/en-us/development-tool/atsamd21-xpro) and the ["mikroBUS Xplained Pro"](https://www.microchip.com/en-us/development-tool/ATMBUSADAPTER-XPRO) is used once as a vehicle for updating the firmware for the ATWINC1500 Wi-Fi module on the WiFi7 click board.
 
-    <img src=".//media/SAMD21_XPRO.png" width=400/>
+    <img src=".//media/SAMD21_XPRO.png" width=300/>
+    <img src=".//media/mikroBUS_XPRO.png" width=200/>
 
 **[IMPORTANT - PLEASE NOTE]** WiFi7 click boards that are being used for the very first time out of the box, and which have not gone through a firmware update, will most likely be pre-programmed with an earlier version of Wi-Fi firmware that precedes inclusion of cloud authentication capabilities.
 

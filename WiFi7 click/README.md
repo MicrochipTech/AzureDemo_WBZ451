@@ -6,6 +6,8 @@ The ATWINC1500 module on the WiFi7 click board needs to be updated with a minimu
 
 ## Software Requirements
 
+Click on the following links to install the necessary software:
+
 - [Microchip Studio for AVR and SAM Devices](https://www.microchip.com/en-us/tools-resources/develop/microchip-studio)
 - [MPLAB Integrated Programming Environment (IPE)](https://www.microchip.com/en-us/tools-resources/production/mplab-integrated-programming-environment)
 
